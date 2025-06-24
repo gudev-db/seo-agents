@@ -180,7 +180,7 @@ with tabs[5]:
     st.write("Create AI-optimized comparison pages")
     
     target_query = st.text_input("Comparison Query", placeholder="E.g., '[Your Product] vs [Competitor] for [Use Case] in 2025'",key="your_tool6")
-    your_product = st.text_input("Your Product Name"key="your_tool7")
+    your_product = st.text_input("Your Product Name",key="your_tool7")
     competitor = st.text_input("Competitor Name",key="your_tool8")
     
     if st.button("Generate Comparison"):
