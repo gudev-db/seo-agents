@@ -39,7 +39,7 @@ with tabs[0]:
     st.header("AI Search Page Builder")
     st.write("Create AI-optimized articles designed to be quoted by AI assistants")
     
-    target_query = st.text_input("Target Query", placeholder="E.g., 'How is [Your Product] better than [Competitor] in 2025?'")
+    target_query = st.text_input("Target Query", placeholder="E.g., 'How is [Your Product] better than [Competitor] in 2025?'", key="your_tool")
     key_points = st.text_area("Key Points to Emphasize", placeholder="E.g., 'Ease of onboarding, integrations, and pricing transparency'")
     word_count = st.slider("Target Word Count", 400, 1000, 600)
     reading_level = st.selectbox("Reading Level", ["8th grade", "High school", "College-level", "Professional"])
@@ -74,8 +74,8 @@ with tabs[1]:
     st.header("AI Search Topic Expansion")
     st.write("Generate AI search-optimized query angles for your core topic")
     
-    core_topic = st.text_input("Core Topic", placeholder="E.g., 'AI video tools for creators'")
-    target_audience = st.text_input("Target Audience", placeholder="E.g., 'bootstrapped startups', 'B2B SaaS teams'")
+    core_topic = st.text_input("Core Topic", placeholder="E.g., 'AI video tools for creators'",key="your_tool1")
+    target_audience = st.text_input("Target Audience", placeholder="E.g., 'bootstrapped startups', 'B2B SaaS teams'",key="your_tool2")
     
     if st.button("Generate Query Angles"):
         with st.spinner('Brainstorming search angles...'):
@@ -100,7 +100,7 @@ with tabs[2]:
     st.write("Analyze and replicate successful AI search results")
     
     example_answer = st.text_area("Paste Zero-Click Summary to Analyze", height=150)
-    target_query = st.text_input("Target Query for Replication", placeholder="The query you want to rank for")
+    target_query = st.text_input("Target Query for Replication", placeholder="The query you want to rank for",key="your_tool3")
     audience = st.selectbox("Audience", ["Content marketing team", "In-house writers", "SEO contractors"])
     
     if st.button("Analyze & Create Guide"):
@@ -128,7 +128,7 @@ with tabs[3]:
     st.write("Transform existing content for better AI search performance")
     
     original_content = st.text_area("Original Paragraph", height=150)
-    target_question = st.text_input("Target Question This Should Answer")
+    target_question = st.text_input("Target Question This Should Answer",key="your_too4l")
     
     if st.button("Optimize Content"):
         with st.spinner('Rewriting for AI search...'):
@@ -152,7 +152,7 @@ with tabs[4]:
     st.write("Assess content for zero-click AI search optimization")
     
     content_to_analyze = st.text_area("Content to Analyze", height=200)
-    target_query = st.text_input("Target Query for This Content")
+    target_query = st.text_input("Target Query for This Content",key="your_tool5")
     
     if st.button("Analyze Content"):
         with st.spinner('Evaluating AI SEO readiness...'):
@@ -179,9 +179,9 @@ with tabs[5]:
     st.header("Comparison Page Generator")
     st.write("Create AI-optimized comparison pages")
     
-    target_query = st.text_input("Comparison Query", placeholder="E.g., '[Your Product] vs [Competitor] for [Use Case] in 2025'")
-    your_product = st.text_input("Your Product Name")
-    competitor = st.text_input("Competitor Name")
+    target_query = st.text_input("Comparison Query", placeholder="E.g., '[Your Product] vs [Competitor] for [Use Case] in 2025'",key="your_tool6")
+    your_product = st.text_input("Your Product Name"key="your_tool7")
+    competitor = st.text_input("Competitor Name",key="your_tool8")
     
     if st.button("Generate Comparison"):
         with st.spinner('Creating comparison page...'):
@@ -207,10 +207,10 @@ with tabs[6]:
     st.header("AI-Optimized Buyer's Guide")
     st.write("Create guides that AI will quote for product selection queries")
     
-    product_type = st.text_input("Product Type", placeholder="E.g., 'project management tools for startups'")
-    target_query = st.text_input("Target Buyer Query", placeholder="E.g., 'best CRM for early-stage SaaS startups in 2025'")
-    audience = st.text_input("Target Audience", placeholder="E.g., 'startup founders, nonprofit managers'")
-    your_tool = st.text_input("Your Tool Name")
+    product_type = st.text_input("Product Type", placeholder="E.g., 'project management tools for startups'",key="your_tool9")
+    target_query = st.text_input("Target Buyer Query", placeholder="E.g., 'best CRM for early-stage SaaS startups in 2025'",key="your_tool11")
+    audience = st.text_input("Target Audience", placeholder="E.g., 'startup founders, nonprofit managers'",key="your_tool111")
+    your_tool = st.text_input("Your Tool Name",key="your_tool1111")
     
     if st.button("Generate Buyer's Guide"):
         with st.spinner("Creating AI-friendly buyer's guide"):
@@ -241,9 +241,9 @@ with tabs[7]:
     st.header("Feature Explainer")
     st.write("Create AI-search-optimized feature explanations")
     
-    feature_name = st.text_input("Feature Name", placeholder="E.g., 'automated lead scoring in [Your Product]'")
-    target_query = st.text_input("Target Query for This Feature", placeholder="E.g., 'What is automated lead scoring and how does it work in HubSpot?'")
-    your_product = st.text_input("Your Product Name")
+    feature_name = st.text_input("Feature Name", placeholder="E.g., 'automated lead scoring in [Your Product]'",key="your_too66l")
+    target_query = st.text_input("Target Query for This Feature", placeholder="E.g., 'What is automated lead scoring and how does it work in HubSpot?'",key="your_tool99")
+    your_product = st.text_input("Your Product Name",key="your_tool999")
     
     if st.button("Generate Feature Explanation"):
         with st.spinner('Creating feature explainer...'):
@@ -275,7 +275,7 @@ with tabs[8]:
     st.header("Myth-Busting Page")
     st.write("Create content that debunks myths for AI search queries")
     
-    myth_query = st.text_input("Myth-Based Query", placeholder="E.g., 'Is [Your Product] too expensive for small businesses?'")
+    myth_query = st.text_input("Myth-Based Query", placeholder="E.g., 'Is [Your Product] too expensive for small businesses?'",key="your_too432l")
     counter_argument = st.text_area("Your Counter Argument", placeholder="E.g., 'We offer a free plan and flexible pricing tiers.'")
     
     if st.button("Generate Myth-Busting Content"):
@@ -308,8 +308,8 @@ with tabs[9]:
     st.header("Long-Tail FAQ Generator")
     st.write("Create LLM-friendly answers for specific questions")
     
-    question = st.text_input("FAQ Question", placeholder="E.g., 'Can I integrate [Your Product] with Outlook and Google Calendar at the same time?'")
-    audience = st.text_input("Target Audience", placeholder="E.g., 'non-technical small business owners'")
+    question = st.text_input("FAQ Question", placeholder="E.g., 'Can I integrate [Your Product] with Outlook and Google Calendar at the same time?'",key="your_tool32323")
+    audience = st.text_input("Target Audience", placeholder="E.g., 'non-technical small business owners'",key="your_too232l")
     
     if st.button("Generate FAQ Answer"):
         with st.spinner('Creating optimized FAQ answer...'):
