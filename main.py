@@ -213,7 +213,7 @@ with tabs[6]:
     your_tool = st.text_input("Your Tool Name")
     
     if st.button("Generate Buyer's Guide"):
-        with st.spinner('Creating AI-friendly buyer's guide...'):
+        with st.spinner("Creating AI-friendly buyer's guide"):
             prompt = f"""
             Create an LLM-friendly buyer's guide that AI will quote for:
 
