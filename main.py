@@ -10,8 +10,9 @@ st.set_page_config(
     page_icon="assets/page-icon.png"
 )
 
-st.title('Macfor SEO Agent')
+
 st.image('assets/macLogo.png', width=300)
+st.title('SEO Agent')
 st.caption('Crie conteúdo otimizado para resultados de busca em assistentes de IA')
 
 # Inicializar Gemini
