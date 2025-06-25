@@ -449,10 +449,17 @@ with st.expander("🆚 Comparador de Produtos", expanded=False):
         key="produto_a_6"
     )
     product_b = st.text_input(
+        "Produto a ser comparado*",
+        placeholder="Nome do produto/serviço do concorrente",
+        key="produto_b_6"
+    )
+
+    concorrente = st.text_input(
         "Concorrente*",
         placeholder="Nome do concorrente",
         key="produto_b_6"
     )
+    
     comparison_aspects = st.text_area(
         "Critérios de Comparação",
         placeholder="Ex: preço, recursos, atendimento, integrações...",
@@ -466,7 +473,11 @@ with st.expander("🆚 Comparador de Produtos", expanded=False):
             with st.spinner('Criando análise comparativa...'):
                 prompt = f"""
                 Crie uma comparação detalhada entre:
+                #SERVIÇO DO USUÁRIO#
                 - {product_a}
+                #CONCORRENTE#
+                - {concorrente}
+                #Produto/serviço do concorrente#
                 - {product_b}
                 
                 **Critérios:** {comparison_aspects or 'Use os padrões do mercado'}
