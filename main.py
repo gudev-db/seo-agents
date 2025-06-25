@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from google import genai
+import google.generativeai as genai
 from pymongo import MongoClient
 
 # Configuração inicial
@@ -15,7 +15,8 @@ st.caption('Crie conteúdo otimizado para resultados de busca em assistentes de 
 
 # Inicializar Gemini
 gemini_api_key = os.getenv("GEM_API_KEY")
-client = genai.Client(api_key=gemini_api_key)
+genai.configure(api_key=gemini_api_key)
+modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
 
 # CSS personalizado
 st.markdown("""
@@ -180,18 +181,6 @@ window.addEventListener('load', () => {
 # CONTEÚDO DAS ABAS (ATUALIZAR ÍNDICES CONFORME NOVO SISTEMA)
 # ==============================================
 
-def generate_content(prompt):
-    """Função auxiliar para gerar conteúdo com a nova API"""
-    try:
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=prompt
-        )
-        return response.text
-    except Exception as e:
-        st.error(f"Erro ao gerar conteúdo: {str(e)}")
-        return None
-
 # 1. CONSTRUTOR DE PÁGINAS DE BUSCA (índice 0)
 with tabs[0]:
     st.header("📝 Construtor de Páginas para Buscas em IA")
@@ -248,10 +237,9 @@ with tabs[0]:
                 - Linguagem natural e técnica balanceada
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
-                    st.success("✅ Artigo gerado com otimização para citação em IA!")
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
+                st.success("✅ Artigo gerado com otimização para citação em IA!")
 
 # 2. EXPANSOR DE TÓPICOS (índice 1)
 with tabs[1]:
@@ -291,14 +279,13 @@ with tabs[1]:
                 |------|----------------|-----------|----------------|
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
-                    st.download_button(
-                        "📥 Baixar Tabela Completa",
-                        response,
-                        file_name=f"ideias_conteudo_{main_topic[:20]}.md"
-                    )
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
+                st.download_button(
+                    "📥 Baixar Tabela Completa",
+                    response.text,
+                    file_name=f"ideias_conteudo_{main_topic[:20]}.md"
+                )
 
 # 3. ANALISADOR DE RESULTADOS (índice 2)
 with tabs[2]:
@@ -339,9 +326,8 @@ with tabs[2]:
                 Use markdown com destaques em **negrito** para insights.
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
 
 # 4. REESCRITOR DE CONTEÚDO (índice 3)
 with tabs[3]:
@@ -387,10 +373,9 @@ with tabs[3]:
                 - Destaques para citações
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
-                    st.toast('Conteúdo otimizado com sucesso!', icon='🎯')
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
+                st.toast('Conteúdo otimizado com sucesso!', icon='🎯')
 
 # 5. VALIDADOR DE CONTEÚDO (índice 4)
 with tabs[4]:
@@ -450,9 +435,8 @@ with tabs[4]:
                 - Exemplo de trecho otimizado
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
 
 # 6. COMPARADOR DE PRODUTOS (índice 5 - agora no dropdown)
 with st.expander("🆚 Comparador de Produtos", expanded=False):
@@ -501,9 +485,8 @@ with st.expander("🆚 Comparador de Produtos", expanded=False):
                 - Destaque para diferenciais
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
 
 # 7. GUIA DO COMPRADOR (índice 6 - agora no dropdown)
 with st.expander("🛒 Guia do Comprador", expanded=False):
@@ -551,9 +534,8 @@ with st.expander("🛒 Guia do Comprador", expanded=False):
                 - Destaque para soluções ideais
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
 
 # 8. EXPLICADOR DE RECURSOS (índice 7 - agora no dropdown)
 with st.expander("⚙️ Explicador de Recursos", expanded=False):
@@ -601,9 +583,8 @@ with st.expander("⚙️ Explicador de Recursos", expanded=False):
                 - Links para aprofundamento
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
 
 # 9. DESMISTIFICADOR (índice 8 - agora no dropdown)
 with st.expander("❌ Desmistificador de Conceitos", expanded=False):
@@ -650,9 +631,8 @@ with st.expander("❌ Desmistificador de Conceitos", expanded=False):
                 - Chamada para ação positiva
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
 
 # 10. GERADOR DE FAQ (índice 9 - agora no dropdown)
 with st.expander("❓ Gerador de Perguntas Frequentes", expanded=False):
@@ -702,6 +682,5 @@ with st.expander("❓ Gerador de Perguntas Frequentes", expanded=False):
                 - Blocos de código se técnico
                 """
                 
-                response = generate_content(prompt)
-                if response:
-                    st.markdown(response)
+                response = modelo_texto.generate_content(prompt)
+                st.markdown(response.text)
