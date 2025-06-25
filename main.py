@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-import google.generativeai as genai
+from google import genai
 from pymongo import MongoClient
 
 # Configuração inicial
@@ -15,16 +15,14 @@ st.caption('Crie conteúdo otimizado para resultados de busca em assistentes de 
 
 # Inicializar Gemini
 gemini_api_key = os.getenv("GEM_API_KEY")
-genai.configure(api_key=gemini_api_key)
-modelo_texto = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key=gemini_api_key)
 
 # CSS personalizado
 st.markdown("""
 <style>
-    /* Abas roláveis */
+    /* Estilos para abas principais */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        overflow-x: auto;
         flex-wrap: nowrap;
         padding-bottom: 5px;
     }
@@ -43,6 +41,25 @@ st.markdown("""
         background-color: #f8f9fa;
     }
     
+    /* Estilos para o dropdown de abas secundárias */
+    .secondary-tabs {
+        margin: 0.5rem 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .secondary-tabs select {
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        background-color: white;
+        cursor: pointer;
+    }
+    .secondary-tabs label {
+        font-weight: 500;
+        color: #555;
+    }
+    
     /* Melhorias gerais */
     textarea {
         min-height: 120px !important;
@@ -58,32 +75,24 @@ st.markdown("""
     .stButton button:hover {
         background-color: #45a049;
     }
-    
-    /* Barra de rolagem */
-    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
-        height: 6px;
-    }
-    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-    }
-    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 3px;
-    }
-    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
 </style>
 """, unsafe_allow_html=True)
 
-# Nomes das abas
-tab_names = [
+# ==============================================
+# NOVO SISTEMA DE ABAS
+# ==============================================
+
+# Abas principais (sempre visíveis)
+primary_tabs = [
     "🔍 Construtor de Páginas",
     "🧠 Expansor de Tópicos",
     "🔬 Analisador de Resultados",
     "✍️ Reescritor de Conteúdo",
-    "✅ Validador SEO",
+    "✅ Validador SEO"
+]
+
+# Abas secundárias (em dropdown)
+secondary_tabs = [
     "🆚 Comparador de Produtos",
     "🛒 Guia do Comprador",
     "⚙️ Explicador de Recursos",
@@ -91,12 +100,99 @@ tab_names = [
     "❓ Gerador de FAQ"
 ]
 
-# Criar abas
-tabs = st.tabs(tab_names)
+# Criar abas principais
+tabs = st.tabs(primary_tabs)
+
+# Dropdown para abas secundárias
+st.markdown("""
+<div class="secondary-tabs">
+    <label for="secondary-tabs-select">Mais ferramentas:</label>
+    <select id="secondary-tabs-select">
+        <option value="" selected disabled>Selecione uma ferramenta...</option>
+""", unsafe_allow_html=True)
+
+# Adicionar opções ao dropdown
+for i, tab_name in enumerate(secondary_tabs, start=len(primary_tabs)):
+    st.markdown(f'<option value="{i}">{tab_name}</option>', unsafe_allow_html=True)
+
+st.markdown("""
+    </select>
+</div>
+
+<script>
+// Navegação pelo dropdown
+document.getElementById('secondary-tabs-select').addEventListener('change', function() {
+    const tabIndex = parseInt(this.value);
+    if(!isNaN(tabIndex)) {
+        // Clica na aba correspondente
+        const tabs = document.querySelectorAll('[data-baseweb="tab"]');
+        if(tabs[tabIndex]) {
+            tabs[tabIndex].click();
+            
+            // Rola suavemente para a aba
+            tabs[tabIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+    }
+    this.value = ""; // Reseta o dropdown
+});
+
+// Atualiza URL ao mudar de aba
+const observer = new MutationObserver(() => {
+    const activeTab = document.querySelector('.stTabs [aria-selected="true"]');
+    if (activeTab) {
+        const tabName = activeTab.textContent.trim();
+        window.history.replaceState(null, null, `#${encodeURIComponent(tabName)}`);
+    }
+});
+observer.observe(document.querySelector('.stTabs'), {
+    attributes: true,
+    childList: true,
+    subtree: true
+});
+
+// Rolagem para aba ao carregar com hash
+window.addEventListener('load', () => {
+    if (window.location.hash) {
+        const targetTab = decodeURIComponent(window.location.hash.substring(1));
+        const tabs = document.querySelectorAll('[data-baseweb="tab"]');
+        tabs.forEach((tab, index) => {
+            if (tab.textContent.trim() === targetTab) {
+                tab.click();
+                setTimeout(() => {
+                    tab.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                }, 300);
+            }
+        });
+    }
+});
+</script>
+""", unsafe_allow_html=True)
 
 # ==============================================
-# 1. CONSTRUTOR DE PÁGINAS DE BUSCA
+# CONTEÚDO DAS ABAS (ATUALIZAR ÍNDICES CONFORME NOVO SISTEMA)
 # ==============================================
+
+def generate_content(prompt):
+    """Função auxiliar para gerar conteúdo com a nova API"""
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=prompt
+        )
+        return response.text
+    except Exception as e:
+        st.error(f"Erro ao gerar conteúdo: {str(e)}")
+        return None
+
+# 1. CONSTRUTOR DE PÁGINAS DE BUSCA (índice 0)
 with tabs[0]:
     st.header("📝 Construtor de Páginas para Buscas em IA")
     st.write("Crie artigos completos otimizados para serem citados por assistentes como ChatGPT e Gemini")
@@ -152,13 +248,12 @@ with tabs[0]:
                 - Linguagem natural e técnica balanceada
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
-                st.success("✅ Artigo gerado com otimização para citação em IA!")
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
+                    st.success("✅ Artigo gerado com otimização para citação em IA!")
 
-# ==============================================
-# 2. EXPANSOR DE TÓPICOS
-# ==============================================
+# 2. EXPANSOR DE TÓPICOS (índice 1)
 with tabs[1]:
     st.header("🧠 Gerador de Ideias para Conteúdo")
     st.write("Descubra subtópicos e perguntas que seu público pesquisa em assistentes de IA")
@@ -196,17 +291,16 @@ with tabs[1]:
                 |------|----------------|-----------|----------------|
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
-                st.download_button(
-                    "📥 Baixar Tabela Completa",
-                    response.text,
-                    file_name=f"ideias_conteudo_{main_topic[:20]}.md"
-                )
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
+                    st.download_button(
+                        "📥 Baixar Tabela Completa",
+                        response,
+                        file_name=f"ideias_conteudo_{main_topic[:20]}.md"
+                    )
 
-# ==============================================
-# 3. ANALISADOR DE RESULTADOS ZERO-CLICK
-# ==============================================
+# 3. ANALISADOR DE RESULTADOS (índice 2)
 with tabs[2]:
     st.header("🔍 Engenharia Reversa de Respostas de IA")
     st.write("Analise respostas de assistentes e aprenda a estruturar seu conteúdo para ser citado")
@@ -245,12 +339,11 @@ with tabs[2]:
                 Use markdown com destaques em **negrito** para insights.
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
 
-# ==============================================
-# 4. REESCRITOR DE CONTEÚDO
-# ==============================================
+# 4. REESCRITOR DE CONTEÚDO (índice 3)
 with tabs[3]:
     st.header("✍️ Otimizador de Conteúdo Existente")
     st.write("Transforme artigos comuns em conteúdo perfeito para citação em IA")
@@ -294,13 +387,12 @@ with tabs[3]:
                 - Destaques para citações
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
-                st.toast('Conteúdo otimizado com sucesso!', icon='🎯')
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
+                    st.toast('Conteúdo otimizado com sucesso!', icon='🎯')
 
-# ==============================================
-# 5. VALIDADOR DE CONTEÚDO
-# ==============================================
+# 5. VALIDADOR DE CONTEÚDO (índice 4)
 with tabs[4]:
     st.header("✅ Analisador de Qualidade SEO/IA")
     st.write("Verifique se seu conteúdo está pronto para rankear em assistentes virtuais")
@@ -358,13 +450,12 @@ with tabs[4]:
                 - Exemplo de trecho otimizado
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
 
-# ==============================================
-# 6. COMPARADOR DE PRODUTOS
-# ==============================================
-with tabs[5]:
+# 6. COMPARADOR DE PRODUTOS (índice 5 - agora no dropdown)
+with st.expander("🆚 Comparador de Produtos", expanded=False):
     st.header("🆚 Gerador de Comparações Técnicas")
     st.write("Crie comparações detalhadas que aparecem como respostas em buscas")
     
@@ -410,13 +501,12 @@ with tabs[5]:
                 - Destaque para diferenciais
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
 
-# ==============================================
-# 7. GUIA DO COMPRADOR
-# ==============================================
-with tabs[6]:
+# 7. GUIA DO COMPRADOR (índice 6 - agora no dropdown)
+with st.expander("🛒 Guia do Comprador", expanded=False):
     st.header("🛒 Criador de Guias de Compra")
     st.write("Produza guias completos que respondem a consultas do tipo 'melhor X para Y'")
     
@@ -461,13 +551,12 @@ with tabs[6]:
                 - Destaque para soluções ideais
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
 
-# ==============================================
-# 8. EXPLICADOR DE RECURSOS
-# ==============================================
-with tabs[7]:
+# 8. EXPLICADOR DE RECURSOS (índice 7 - agora no dropdown)
+with st.expander("⚙️ Explicador de Recursos", expanded=False):
     st.header("⚙️ Documentador de Funcionalidades")
     st.write("Crie explicações técnicas que aparecem como respostas diretas em buscas")
     
@@ -512,13 +601,12 @@ with tabs[7]:
                 - Links para aprofundamento
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
 
-# ==============================================
-# 9. DESMISTIFICADOR
-# ==============================================
-with tabs[8]:
+# 9. DESMISTIFICADOR (índice 8 - agora no dropdown)
+with st.expander("❌ Desmistificador de Conceitos", expanded=False):
     st.header("❌ Desmistificador de Conceitos")
     st.write("Responda a mitos e equívocos comuns no seu nicho")
     
@@ -562,13 +650,12 @@ with tabs[8]:
                 - Chamada para ação positiva
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
 
-# ==============================================
-# 10. GERADOR DE FAQ
-# ==============================================
-with tabs[9]:
+# 10. GERADOR DE FAQ (índice 9 - agora no dropdown)
+with st.expander("❓ Gerador de Perguntas Frequentes", expanded=False):
     st.header("❓ Criador de Perguntas Frequentes")
     st.write("Desenvolva respostas completas para dúvidas comuns do seu público")
     
@@ -615,48 +702,6 @@ with tabs[9]:
                 - Blocos de código se técnico
                 """
                 
-                response = modelo_texto.generate_content(prompt)
-                st.markdown(response.text)
-
-# JavaScript para melhorar navegação
-st.components.v1.html("""
-<script>
-// Suaviza rolagem entre abas
-document.querySelectorAll('[data-baseweb="tab"]').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelector('.stTabs [aria-selected="true"]').scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'center'
-        });
-    });
-});
-
-// Atualiza URL ao mudar de aba
-const observer = new MutationObserver(() => {
-    const activeTab = document.querySelector('.stTabs [aria-selected="true"]');
-    if (activeTab) {
-        const tabName = activeTab.textContent.trim();
-        window.history.replaceState(null, null, `#${encodeURIComponent(tabName)}`);
-    }
-});
-observer.observe(document.querySelector('.stTabs'), {
-    attributes: true,
-    childList: true,
-    subtree: true
-});
-
-// Rolagem para aba ao carregar com hash
-window.addEventListener('load', () => {
-    if (window.location.hash) {
-        const targetTab = decodeURIComponent(window.location.hash.substring(1));
-        const tabs = document.querySelectorAll('[data-baseweb="tab"]');
-        tabs.forEach((tab, index) => {
-            if (tab.textContent.trim() === targetTab) {
-                tab.click();
-            }
-        });
-    }
-});
-</script>
-""")
+                response = generate_content(prompt)
+                if response:
+                    st.markdown(response)
