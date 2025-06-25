@@ -6,13 +6,13 @@ from pymongo import MongoClient
 # Configuração inicial
 st.set_page_config(
     layout="wide",
-    page_title="Macfor SEO Agent",
+    page_title="Macfor AIO Agent",
     page_icon="assets/page-icon.png"
 )
 
 
 st.image('assets/macLogo.png', width=300)
-st.title('SEO Agent')
+st.title('AIO Agent')
 st.caption('Crie conteúdo otimizado para resultados de busca em assistentes de IA')
 
 # Inicializar Gemini
