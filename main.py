@@ -451,7 +451,7 @@ with st.expander("🆚 Comparador de Produtos", expanded=False):
     product_b = st.text_input(
         "Produto a ser comparado*",
         placeholder="Nome do produto/serviço do concorrente",
-        key="produto_b_6"
+        key="produto_b_666"
     )
 
     concorrente = st.text_input(
