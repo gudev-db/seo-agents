@@ -8,128 +8,132 @@ st.set_page_config(
     page_title="Macfor AIO Agent",
     page_icon="assets/page-icon.png"
 )
-
-# CSS personalizado com nova tipografia e estilo
+# CSS personalizado com estilo Macfor
 st.markdown("""
 <style>
-    /* Importação de fontes do Google */
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;500&display=swap');
+    /* Importação de fontes */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
     
-    /* Fundo escuro para todo o app */
-    .main {
-        background-color: #1a1a1a;
+    /* Reset e estilos globais */
+    html, body, .main {
+        background-color: #F5F7FA !important;
     }
     
-    /* Estilos gerais */
     * {
         font-family: 'Open Sans', sans-serif;
-        color: white !important;
+        color: #333333;
     }
     
-    /* Títulos principais */
+    /* Cabeçalhos */
     h1 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 700 !important;
-        color: white !important;
+        color: #002D72 !important;
         margin-bottom: 0.5rem !important;
+        letter-spacing: -0.5px;
     }
     
     h2 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 600 !important;
-        color: white !important;
+        color: #002D72 !important;
         margin-top: 1.5rem !important;
     }
     
     h3 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 500 !important;
-        color: white !important;
+        color: #0055B8 !important;
     }
     
     /* Texto normal */
-    .stMarkdown p, .stMarkdown li, .stMarkdown ol, .stMarkdown ul {
-        font-family: 'Roboto', sans-serif !important;
+    .stMarkdown p, .stMarkdown li, .stMarkdown ol {
+        font-family: 'Open Sans', sans-serif !important;
         font-weight: 400 !important;
-        color: white !important;
-        line-height: 1.6 !important;
+        color: #333333 !important;
+        line-height: 1.8 !important;
+        font-size: 15px;
     }
     
-    /* Subtítulos e legendas */
+    /* Subtítulos */
     .stCaption, .stSubheader {
         font-family: 'Open Sans', sans-serif !important;
         font-weight: 600 !important;
-        color: #cccccc !important;
+        color: #666666 !important;
     }
     
-    /* Abas principais */
+    /* Abas */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 5px;
         flex-wrap: nowrap;
-        padding-bottom: 5px;
-        background-color: #1a1a1a;
+        padding-bottom: 0;
+        border-bottom: 1px solid #E0E0E0;
     }
     
     .stTabs [data-baseweb="tab"] {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 600 !important;
-        padding: 8px 16px;
-        border-radius: 4px 4px 0 0;
+        padding: 10px 20px;
+        border-radius: 6px 6px 0 0;
         white-space: nowrap;
         font-size: 14px;
         transition: all 0.2s;
-        color: #cccccc !important;
-        background-color: #333333;
+        color: #666666 !important;
+        background-color: transparent !important;
+        border: none;
+        margin-right: 2px;
     }
     
     .stTabs [aria-selected="true"] {
-        background-color: #4285F4 !important;
+        background-color: #0055B8 !important;
         color: white !important;
-        font-weight: 700 !important;
+        border-bottom: 3px solid #002D72;
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        background-color: #555555 !important;
-        color: white !important;
+        color: #0055B8 !important;
+        background-color: #E6F0FF !important;
     }
     
-    /* Dropdown de abas secundárias */
+    /* Dropdown de abas */
     .secondary-tabs {
-        margin: 0.5rem 0 1rem;
+        margin: 1rem 0;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
     }
     
     .secondary-tabs select {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 500 !important;
-        padding: 6px 12px;
-        border-radius: 4px;
-        border: 1px solid #555555;
-        background-color: #333333;
+        padding: 8px 15px;
+        border-radius: 6px;
+        border: 1px solid #D0D0D0;
+        background-color: white;
         cursor: pointer;
-        color: white !important;
+        color: #333333;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
     
     .secondary-tabs label {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 500 !important;
-        color: white !important;
+        color: #002D72 !important;
+        font-size: 14px;
     }
     
-    /* Campos de entrada */
-    .stTextInput input, .stTextArea textarea, .stSelectbox select {
-        font-family: 'Roboto', sans-serif !important;
-        background-color: #333333 !important;
-        color: white !important;
-        border: 1px solid #555555 !important;
+    /* Campos de formulário */
+    .stTextInput input, .stTextArea textarea {
+        font-family: 'Open Sans', sans-serif !important;
+        border: 1px solid #D0D0D0 !important;
+        border-radius: 6px !important;
+        padding: 10px 12px !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
     }
     
-    /* Placeholder text */
-    input::placeholder, textarea::placeholder {
-        color: #999999 !important;
-        opacity: 1 !important;
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #0055B8 !important;
+        box-shadow: 0 0 0 2px rgba(0,85,184,0.2) !important;
     }
     
     /* Botões */
@@ -137,96 +141,54 @@ st.markdown("""
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 600 !important;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        background-color: #4285F4 !important;
+        letter-spacing: 0.8px;
+        background-color: #0055B8 !important;
         color: white !important;
         transition: all 0.3s;
         border: none !important;
-    }
-    
-    .stButton button:hover {
-        background-color: #3367D6 !important;
-        transform: translateY(-1px);
+        border-radius: 6px !important;
+        padding: 10px 20px !important;
+        font-size: 14px !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    /* Sliders */
-    .stSlider {
-        color: white !important;
-    }
-    
-    .stSlider .st-ae {
-        color: white !important;
-    }
-    
-    /* Alertas e mensagens */
-    .stAlert {
-        font-family: 'Roboto', sans-serif !important;
-        background-color: #333333 !important;
-    }
-    
-    /* Cabeçalho com logo */
-    .stImage {
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Espaçamentos melhorados */
-    .stMarkdown {
-        margin-bottom: 1rem !important;
-    }
-    
-    /* Blocos de código */
-    pre {
-        font-family: 'Roboto Mono', monospace !important;
-        background-color: #333333 !important;
-        border-radius: 4px !important;
-        padding: 12px !important;
-        border: 1px solid #555555 !important;
-    }
-    
-    /* Links */
-    a {
-        color: #4dabf7 !important;
-        text-decoration: none !important;
-        font-weight: 500 !important;
-    }
-    
-    a:hover {
-        text-decoration: underline !important;
-    }
-    
-    /* Tabelas */
-    table {
-        font-family: 'Roboto', sans-serif !important;
-        color: white !important;
-    }
-    
-    /* Widgets - background escuro */
-    .st-bb, .st-bc, .st-bd, .st-be, .st-bf, .st-bg, .st-bh, .st-bi, .st-bj, .st-bk, .st-bl, .st-bm, .st-bn, .st-bo, .st-bp, .st-bq, .st-br, .st-bs, .st-bt, .st-bu, .st-bv, .st-bw, .st-bx, .st-by, .st-bz {
-        background-color: #1a1a1a !important;
+    .stButton button:hover {
+        background-color: #00479E !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
     
     /* Container principal */
     .block-container {
-        background-color: #1a1a1a;
         padding-top: 2rem;
+        padding-bottom: 2rem;
+        background-color: #F5F7FA;
     }
     
-    /* Tooltips */
-    .stTooltip {
-        background-color: #333333 !important;
-        color: white !important;
-        border: 1px solid #555555 !important;
+    /* Cards e containers */
+    .stAlert, .stExpander {
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+        border: 1px solid #E0E0E0 !important;
+        background-color: white !important;
     }
     
-    /* Expanders */
-    .stExpander {
-        border: 1px solid #555555 !important;
-        background-color: #1a1a1a !important;
+    /* Logo */
+    .stImage {
+        margin-bottom: 2rem;
     }
     
-    .stExpander label {
-        color: white !important;
+    /* Adaptações para mobile */
+    @media (max-width: 768px) {
+        .stTabs [data-baseweb="tab"] {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        
+        .secondary-tabs {
+            flex-direction: column;
+            align-items: flex-start;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
