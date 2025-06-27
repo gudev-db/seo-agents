@@ -202,7 +202,7 @@ st.markdown("""
     /* Logo */
     .stImage {
         margin-bottom: 2rem;
-        filter: brightness(0) invert(1);
+        
     }
     
     /* Adaptações para mobile */
