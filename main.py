@@ -317,30 +317,7 @@ tabs = st.tabs(primary_tabs)
 for i, tab_name in enumerate(secondary_tabs, start=len(primary_tabs)):
     st.markdown(f'<option value="{i}">{tab_name}</option>', unsafe_allow_html=True)
 
-st.markdown("""
-    </select>
-</div>
 
-<script>
-// Navegação pelo dropdown
-document.getElementById('secondary-tabs-select').addEventListener('change', function() {
-    const tabIndex = parseInt(this.value);
-    if(!isNaN(tabIndex)) {
-        // Clica na aba correspondente
-        const tabs = document.querySelectorAll('[data-baseweb="tab"]');
-        if(tabs[tabIndex]) {
-            tabs[tabIndex].click();
-            
-            // Rola suavemente para a aba
-            tabs[tabIndex].scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'center'
-            });
-        }
-    }
-    this.value = ""; // Reseta o dropdown
-});
 
 // Atualiza URL ao mudar de aba
 const observer = new MutationObserver(() => {
