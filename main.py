@@ -16,7 +16,7 @@ st.markdown("""
     
     /* Reset e estilos globais */
     html, body, .main {
-        background-color: #000000 !important;
+        
     }
     
     * {
