@@ -15,37 +15,43 @@ st.markdown("""
     /* Importação de fontes do Google */
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;500&display=swap');
     
+    /* Fundo escuro para todo o app */
+    .main {
+        background-color: #1a1a1a;
+    }
+    
     /* Estilos gerais */
     * {
         font-family: 'Open Sans', sans-serif;
+        color: white !important;
     }
     
     /* Títulos principais */
     h1 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 700 !important;
-        color: #333333 !important;
+        color: white !important;
         margin-bottom: 0.5rem !important;
     }
     
     h2 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 600 !important;
-        color: #333333 !important;
+        color: white !important;
         margin-top: 1.5rem !important;
     }
     
     h3 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 500 !important;
-        color: #333333 !important;
+        color: white !important;
     }
     
     /* Texto normal */
-    .stMarkdown p, .stMarkdown li, .stMarkdown ol {
+    .stMarkdown p, .stMarkdown li, .stMarkdown ol, .stMarkdown ul {
         font-family: 'Roboto', sans-serif !important;
         font-weight: 400 !important;
-        color: #333333 !important;
+        color: white !important;
         line-height: 1.6 !important;
     }
     
@@ -53,7 +59,7 @@ st.markdown("""
     .stCaption, .stSubheader {
         font-family: 'Open Sans', sans-serif !important;
         font-weight: 600 !important;
-        color: #666666 !important;
+        color: #cccccc !important;
     }
     
     /* Abas principais */
@@ -61,6 +67,7 @@ st.markdown("""
         gap: 8px;
         flex-wrap: nowrap;
         padding-bottom: 5px;
+        background-color: #1a1a1a;
     }
     
     .stTabs [data-baseweb="tab"] {
@@ -71,7 +78,8 @@ st.markdown("""
         white-space: nowrap;
         font-size: 14px;
         transition: all 0.2s;
-        color: #666666 !important;
+        color: #cccccc !important;
+        background-color: #333333;
     }
     
     .stTabs [aria-selected="true"] {
@@ -81,8 +89,8 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        background-color: #E8F0FE !important;
-        color: #4285F4 !important;
+        background-color: #555555 !important;
+        color: white !important;
     }
     
     /* Dropdown de abas secundárias */
@@ -98,21 +106,30 @@ st.markdown("""
         font-weight: 500 !important;
         padding: 6px 12px;
         border-radius: 4px;
-        border: 1px solid #ddd;
-        background-color: white;
+        border: 1px solid #555555;
+        background-color: #333333;
         cursor: pointer;
-        color: #333333;
+        color: white !important;
     }
     
     .secondary-tabs label {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 500 !important;
-        color: #666666 !important;
+        color: white !important;
     }
     
     /* Campos de entrada */
-    .stTextInput input, .stTextArea textarea {
+    .stTextInput input, .stTextArea textarea, .stSelectbox select {
         font-family: 'Roboto', sans-serif !important;
+        background-color: #333333 !important;
+        color: white !important;
+        border: 1px solid #555555 !important;
+    }
+    
+    /* Placeholder text */
+    input::placeholder, textarea::placeholder {
+        color: #999999 !important;
+        opacity: 1 !important;
     }
     
     /* Botões */
@@ -133,14 +150,19 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    /* Sliders e selects */
-    .stSlider, .stSelectbox {
-        font-family: 'Roboto', sans-serif !important;
+    /* Sliders */
+    .stSlider {
+        color: white !important;
+    }
+    
+    .stSlider .st-ae {
+        color: white !important;
     }
     
     /* Alertas e mensagens */
     .stAlert {
         font-family: 'Roboto', sans-serif !important;
+        background-color: #333333 !important;
     }
     
     /* Cabeçalho com logo */
@@ -156,14 +178,15 @@ st.markdown("""
     /* Blocos de código */
     pre {
         font-family: 'Roboto Mono', monospace !important;
-        background-color: #f5f5f5 !important;
+        background-color: #333333 !important;
         border-radius: 4px !important;
         padding: 12px !important;
+        border: 1px solid #555555 !important;
     }
     
     /* Links */
     a {
-        color: #4285F4 !important;
+        color: #4dabf7 !important;
         text-decoration: none !important;
         font-weight: 500 !important;
     }
@@ -175,6 +198,35 @@ st.markdown("""
     /* Tabelas */
     table {
         font-family: 'Roboto', sans-serif !important;
+        color: white !important;
+    }
+    
+    /* Widgets - background escuro */
+    .st-bb, .st-bc, .st-bd, .st-be, .st-bf, .st-bg, .st-bh, .st-bi, .st-bj, .st-bk, .st-bl, .st-bm, .st-bn, .st-bo, .st-bp, .st-bq, .st-br, .st-bs, .st-bt, .st-bu, .st-bv, .st-bw, .st-bx, .st-by, .st-bz {
+        background-color: #1a1a1a !important;
+    }
+    
+    /* Container principal */
+    .block-container {
+        background-color: #1a1a1a;
+        padding-top: 2rem;
+    }
+    
+    /* Tooltips */
+    .stTooltip {
+        background-color: #333333 !important;
+        color: white !important;
+        border: 1px solid #555555 !important;
+    }
+    
+    /* Expanders */
+    .stExpander {
+        border: 1px solid #555555 !important;
+        background-color: #1a1a1a !important;
+    }
+    
+    .stExpander label {
+        color: white !important;
     }
 </style>
 """, unsafe_allow_html=True)
