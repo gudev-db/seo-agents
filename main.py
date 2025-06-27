@@ -8,35 +8,37 @@ st.set_page_config(
     page_title="Macfor AIO Agent",
     page_icon="assets/page-icon.png"
 )
-# CSS personalizado com estilo Macfor
+# CSS personalizado com estilo Macfor e fundo preto
 st.markdown("""
 <style>
     /* Importação de fontes */
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
     
-    /* Reset e estilos globais */
-    html, body, .main {
-        
+    /* Fundo preto */
+    html, body, .main, .block-container {
+        background-color: #000000 !important;
     }
     
+    /* Estilos globais */
     * {
         font-family: 'Open Sans', sans-serif;
-        color: #333333;
+        color: #FFFFFF !important;
     }
     
     /* Cabeçalhos */
     h1 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 700 !important;
-        color: #002D72 !important;
+        color: #FFFFFF !important;
         margin-bottom: 0.5rem !important;
         letter-spacing: -0.5px;
+        text-shadow: 0 2px 4px rgba(0,45,114,0.3);
     }
     
     h2 {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 600 !important;
-        color: #002D72 !important;
+        color: #0055B8 !important;
         margin-top: 1.5rem !important;
     }
     
@@ -50,7 +52,7 @@ st.markdown("""
     .stMarkdown p, .stMarkdown li, .stMarkdown ol {
         font-family: 'Open Sans', sans-serif !important;
         font-weight: 400 !important;
-        color: #333333 !important;
+        color: #E0E0E0 !important;
         line-height: 1.8 !important;
         font-size: 15px;
     }
@@ -59,7 +61,7 @@ st.markdown("""
     .stCaption, .stSubheader {
         font-family: 'Open Sans', sans-serif !important;
         font-weight: 600 !important;
-        color: #666666 !important;
+        color: #AAAAAA !important;
     }
     
     /* Abas */
@@ -67,7 +69,7 @@ st.markdown("""
         gap: 5px;
         flex-wrap: nowrap;
         padding-bottom: 0;
-        border-bottom: 1px solid #E0E0E0;
+        border-bottom: 1px solid #333333;
     }
     
     .stTabs [data-baseweb="tab"] {
@@ -78,8 +80,8 @@ st.markdown("""
         white-space: nowrap;
         font-size: 14px;
         transition: all 0.2s;
-        color: #666666 !important;
-        background-color: transparent !important;
+        color: #AAAAAA !important;
+        background-color: #1A1A1A !important;
         border: none;
         margin-right: 2px;
     }
@@ -91,8 +93,8 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        color: #0055B8 !important;
-        background-color: #E6F0FF !important;
+        color: #FFFFFF !important;
+        background-color: #333333 !important;
     }
     
     /* Dropdown de abas */
@@ -108,32 +110,38 @@ st.markdown("""
         font-weight: 500 !important;
         padding: 8px 15px;
         border-radius: 6px;
-        border: 1px solid #D0D0D0;
-        background-color: white;
+        border: 1px solid #333333 !important;
+        background-color: #1A1A1A !important;
         cursor: pointer;
-        color: #333333;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        color: #FFFFFF !important;
     }
     
     .secondary-tabs label {
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 500 !important;
-        color: #002D72 !important;
+        color: #0055B8 !important;
         font-size: 14px;
     }
     
     /* Campos de formulário */
-    .stTextInput input, .stTextArea textarea {
+    .stTextInput input, .stTextArea textarea, .stSelectbox select {
         font-family: 'Open Sans', sans-serif !important;
-        border: 1px solid #D0D0D0 !important;
+        border: 1px solid #333333 !important;
         border-radius: 6px !important;
         padding: 10px 12px !important;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+        background-color: #1A1A1A !important;
+        color: #FFFFFF !important;
     }
     
     .stTextInput input:focus, .stTextArea textarea:focus {
         border-color: #0055B8 !important;
         box-shadow: 0 0 0 2px rgba(0,85,184,0.2) !important;
+    }
+    
+    /* Placeholders */
+    ::placeholder {
+        color: #666666 !important;
+        opacity: 1 !important;
     }
     
     /* Botões */
@@ -149,33 +157,52 @@ st.markdown("""
         border-radius: 6px !important;
         padding: 10px 20px !important;
         font-size: 14px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
     .stButton button:hover {
         background-color: #00479E !important;
         transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.4);
     }
     
-    /* Container principal */
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        background-color: #F5F7FA;
-    }
-    
-    /* Cards e containers */
+    /* Alertas e expansores */
     .stAlert, .stExpander {
         border-radius: 8px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
-        border: 1px solid #E0E0E0 !important;
-        background-color: white !important;
+        background-color: #1A1A1A !important;
+        border: 1px solid #333333 !important;
+    }
+    
+    .stExpander label {
+        color: #FFFFFF !important;
+    }
+    
+    /* Links */
+    a {
+        color: #4DABF7 !important;
+        text-decoration: none !important;
+    }
+    
+    a:hover {
+        text-decoration: underline !important;
+    }
+    
+    /* Sliders */
+    .stSlider .st-ae {
+        color: #0055B8 !important;
+    }
+    
+    /* Blocos de código */
+    pre {
+        background-color: #1A1A1A !important;
+        border: 1px solid #333333 !important;
+        color: #E0E0E0 !important;
     }
     
     /* Logo */
     .stImage {
         margin-bottom: 2rem;
+        filter: brightness(0) invert(1);
     }
     
     /* Adaptações para mobile */
@@ -183,11 +210,6 @@ st.markdown("""
         .stTabs [data-baseweb="tab"] {
             padding: 8px 12px;
             font-size: 13px;
-        }
-        
-        .secondary-tabs {
-            flex-direction: column;
-            align-items: flex-start;
         }
     }
 </style>
