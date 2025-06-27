@@ -2,13 +2,182 @@ import streamlit as st
 import os
 import google.generativeai as genai
 from pymongo import MongoClient
-
 # Configuração inicial
 st.set_page_config(
     layout="wide",
     page_title="Macfor AIO Agent",
     page_icon="assets/page-icon.png"
 )
+
+# CSS personalizado com nova tipografia e estilo
+st.markdown("""
+<style>
+    /* Importação de fontes do Google */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;500&display=swap');
+    
+    /* Estilos gerais */
+    * {
+        font-family: 'Open Sans', sans-serif;
+    }
+    
+    /* Títulos principais */
+    h1 {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 700 !important;
+        color: #333333 !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    h2 {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 600 !important;
+        color: #333333 !important;
+        margin-top: 1.5rem !important;
+    }
+    
+    h3 {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 500 !important;
+        color: #333333 !important;
+    }
+    
+    /* Texto normal */
+    .stMarkdown p, .stMarkdown li, .stMarkdown ol {
+        font-family: 'Roboto', sans-serif !important;
+        font-weight: 400 !important;
+        color: #333333 !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* Subtítulos e legendas */
+    .stCaption, .stSubheader {
+        font-family: 'Open Sans', sans-serif !important;
+        font-weight: 600 !important;
+        color: #666666 !important;
+    }
+    
+    /* Abas principais */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        flex-wrap: nowrap;
+        padding-bottom: 5px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 600 !important;
+        padding: 8px 16px;
+        border-radius: 4px 4px 0 0;
+        white-space: nowrap;
+        font-size: 14px;
+        transition: all 0.2s;
+        color: #666666 !important;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #4285F4 !important;
+        color: white !important;
+        font-weight: 700 !important;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: #E8F0FE !important;
+        color: #4285F4 !important;
+    }
+    
+    /* Dropdown de abas secundárias */
+    .secondary-tabs {
+        margin: 0.5rem 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .secondary-tabs select {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 500 !important;
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        background-color: white;
+        cursor: pointer;
+        color: #333333;
+    }
+    
+    .secondary-tabs label {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 500 !important;
+        color: #666666 !important;
+    }
+    
+    /* Campos de entrada */
+    .stTextInput input, .stTextArea textarea {
+        font-family: 'Roboto', sans-serif !important;
+    }
+    
+    /* Botões */
+    .stButton button {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background-color: #4285F4 !important;
+        color: white !important;
+        transition: all 0.3s;
+        border: none !important;
+    }
+    
+    .stButton button:hover {
+        background-color: #3367D6 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Sliders e selects */
+    .stSlider, .stSelectbox {
+        font-family: 'Roboto', sans-serif !important;
+    }
+    
+    /* Alertas e mensagens */
+    .stAlert {
+        font-family: 'Roboto', sans-serif !important;
+    }
+    
+    /* Cabeçalho com logo */
+    .stImage {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Espaçamentos melhorados */
+    .stMarkdown {
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Blocos de código */
+    pre {
+        font-family: 'Roboto Mono', monospace !important;
+        background-color: #f5f5f5 !important;
+        border-radius: 4px !important;
+        padding: 12px !important;
+    }
+    
+    /* Links */
+    a {
+        color: #4285F4 !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+    }
+    
+    a:hover {
+        text-decoration: underline !important;
+    }
+    
+    /* Tabelas */
+    table {
+        font-family: 'Roboto', sans-serif !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 st.image('assets/macLogo.png', width=300)
