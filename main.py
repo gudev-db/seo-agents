@@ -311,13 +311,7 @@ secondary_tabs = [
 # Criar abas principais
 tabs = st.tabs(primary_tabs)
 
-# Dropdown para abas secundárias
-st.markdown("""
-<div class="secondary-tabs">
-    <label for="secondary-tabs-select">Mais ferramentas:</label>
-    <select id="secondary-tabs-select">
-        <option value="" selected disabled>Selecione uma ferramenta...</option>
-""", unsafe_allow_html=True)
+
 
 # Adicionar opções ao dropdown
 for i, tab_name in enumerate(secondary_tabs, start=len(primary_tabs)):
