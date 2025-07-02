@@ -8,11 +8,11 @@ st.set_page_config(
     page_title="Macfor AIO Agent",
     page_icon="assets/page-icon.png"
 )
-# CSS personalizado com estilo Macfor e fundo preto
+# CSS personalizado com novo estilo baseado nas diretrizes
 st.markdown("""
 <style>
-    /* Importação de fontes */
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+    /* Importação da fonte Poppins */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
     /* Fundo preto */
     html, body, .main, .block-container {
@@ -21,47 +21,52 @@ st.markdown("""
     
     /* Estilos globais */
     * {
-        font-family: 'Open Sans', sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: #FFFFFF !important;
     }
     
     /* Cabeçalhos */
     h1 {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 700 !important;
+        font-size: 46px !important;
         color: #FFFFFF !important;
         margin-bottom: 0.5rem !important;
-        letter-spacing: -0.5px;
-        text-shadow: 0 2px 4px rgba(0,45,114,0.3);
+        background: linear-gradient(90deg, #8E3EEE 0%, #04ABFD 50%, #4179FE 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     
     h2 {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 600 !important;
-        color: #0055B8 !important;
+        font-size: 32px !important;
+        color: #4179FE !important;
         margin-top: 1.5rem !important;
     }
     
     h3 {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 500 !important;
-        color: #0055B8 !important;
+        font-size: 24px !important;
+        color: #00D4B8 !important;
     }
     
     /* Texto normal */
     .stMarkdown p, .stMarkdown li, .stMarkdown ol {
-        font-family: 'Open Sans', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 400 !important;
-        color: #E0E0E0 !important;
+        color: #FFFFFF !important;
         line-height: 1.8 !important;
-        font-size: 15px;
+        font-size: 18px !important;
     }
     
-    /* Subtítulos */
+    /* Texto menor */
     .stCaption, .stSubheader {
-        font-family: 'Open Sans', sans-serif !important;
-        font-weight: 600 !important;
-        color: #AAAAAA !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 300 !important;
+        color: #434343 !important;
+        font-size: 14px !important;
     }
     
     /* Abas */
@@ -69,32 +74,32 @@ st.markdown("""
         gap: 5px;
         flex-wrap: nowrap;
         padding-bottom: 0;
-        border-bottom: 1px solid #333333;
+        border-bottom: 1px solid #434343;
     }
     
     .stTabs [data-baseweb="tab"] {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 600 !important;
         padding: 10px 20px;
         border-radius: 6px 6px 0 0;
         white-space: nowrap;
         font-size: 14px;
         transition: all 0.2s;
-        color: #AAAAAA !important;
-        background-color: #1A1A1A !important;
+        color: #434343 !important;
+        background-color: #000000 !important;
         border: none;
         margin-right: 2px;
     }
     
     .stTabs [aria-selected="true"] {
-        background-color: #0055B8 !important;
+        background: linear-gradient(90deg, #6d13ffff 0%, #4179FE 100%) !important;
         color: white !important;
-        border-bottom: 3px solid #002D72;
+        border-bottom: 3px solid #00D4B8;
     }
     
     .stTabs [data-baseweb="tab"]:hover {
         color: #FFFFFF !important;
-        background-color: #333333 !important;
+        background-color: #434343 !important;
     }
     
     /* Dropdown de abas */
@@ -106,107 +111,123 @@ st.markdown("""
     }
     
     .secondary-tabs select {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 500 !important;
         padding: 8px 15px;
         border-radius: 6px;
-        border: 1px solid #333333 !important;
-        background-color: #1A1A1A !important;
+        border: 1px solid #434343 !important;
+        background-color: #000000 !important;
         cursor: pointer;
         color: #FFFFFF !important;
     }
     
     .secondary-tabs label {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 500 !important;
-        color: #0055B8 !important;
+        color: #4179FE !important;
         font-size: 14px;
     }
     
     /* Campos de formulário */
     .stTextInput input, .stTextArea textarea, .stSelectbox select {
-        font-family: 'Open Sans', sans-serif !important;
-        border: 1px solid #333333 !important;
+        font-family: 'Poppins', sans-serif !important;
+        border: 1px solid #434343 !important;
         border-radius: 6px !important;
         padding: 10px 12px !important;
-        background-color: #1A1A1A !important;
+        background-color: #000000 !important;
         color: #FFFFFF !important;
     }
     
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #0055B8 !important;
-        box-shadow: 0 0 0 2px rgba(0,85,184,0.2) !important;
+        border-color: #4179FE !important;
+        box-shadow: 0 0 0 2px rgba(65, 121, 254, 0.2) !important;
     }
     
     /* Placeholders */
     ::placeholder {
-        color: #666666 !important;
+        color: #434343 !important;
         opacity: 1 !important;
     }
     
     /* Botões */
     .stButton button {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 600 !important;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        background-color: #0055B8 !important;
+        background: linear-gradient(90deg, #6d13ffff 0%, #4179FE 100%) !important;
         color: white !important;
         transition: all 0.3s;
         border: none !important;
         border-radius: 6px !important;
-        padding: 10px 20px !important;
+        padding: 12px 24px !important;
         font-size: 14px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
     .stButton button:hover {
-        background-color: #00479E !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        background: linear-gradient(90deg, #8E3EEE 0%, #04ABFD 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
     
     /* Alertas e expansores */
     .stAlert, .stExpander {
         border-radius: 8px !important;
-        background-color: #1A1A1A !important;
-        border: 1px solid #333333 !important;
+        background-color: #000000 !important;
+        border: 1px solid #434343 !important;
     }
     
     .stExpander label {
         color: #FFFFFF !important;
+        font-weight: 600 !important;
     }
     
     /* Links */
     a {
-        color: #4DABF7 !important;
+        color: #04ABFD !important;
         text-decoration: none !important;
     }
     
     a:hover {
+        color: #00D4B8 !important;
         text-decoration: underline !important;
     }
     
     /* Sliders */
     .stSlider .st-ae {
-        color: #0055B8 !important;
+        color: #4179FE !important;
     }
     
     /* Blocos de código */
     pre {
-        background-color: #1A1A1A !important;
-        border: 1px solid #333333 !important;
-        color: #E0E0E0 !important;
+        background-color: #000000 !important;
+        border: 1px solid #434343 !important;
+        color: #FFFFFF !important;
     }
     
     /* Logo */
     .stImage {
         margin-bottom: 2rem;
-        
     }
     
     /* Adaptações para mobile */
     @media (max-width: 768px) {
+        h1 {
+            font-size: 36px !important;
+        }
+        
+        h2 {
+            font-size: 28px !important;
+        }
+        
+        h3 {
+            font-size: 22px !important;
+        }
+        
+        .stMarkdown p, .stMarkdown li, .stMarkdown ol {
+            font-size: 16px !important;
+        }
+        
         .stTabs [data-baseweb="tab"] {
             padding: 8px 12px;
             font-size: 13px;
