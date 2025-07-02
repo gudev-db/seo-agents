@@ -296,7 +296,8 @@ primary_tabs = [
     "🧠 Expansor de Tópicos",
     "🔬 Analisador de Resultados",
     "✍️ Reescritor de Conteúdo",
-    "✅ Validador SEO"
+    "✅ Validador SEO",
+    "🖼️ Otimizador Visual"
 ]
 
 # Abas secundárias (em dropdown)
@@ -639,6 +640,99 @@ with tabs[4]:
                 response = modelo_texto.generate_content(prompt)
                 st.markdown(response.text)
 
+with tabs[5]:
+    st.header("🖼️ Otimizador Visual de SEO")
+    st.write("Envie um print de tela do seu site e receba recomendações de melhorias de SEO")
+    
+    uploaded_file = st.file_uploader(
+        "Carregue um print de tela do seu site*",
+        type=["png", "jpg", "jpeg"],
+        key="upload_visual"
+    )
+    
+    page_url = st.text_input(
+        "URL da Página (opcional)",
+        placeholder="https://www.exemplo.com/pagina",
+        key="url_visual"
+    )
+    
+    page_type = st.selectbox(
+        "Tipo de Página",
+        ["Homepage", "Página de Produto", "Blog Post", "Landing Page", "Página Institucional"],
+        key="tipo_visual"
+    )
+    
+    if st.button("🔎 Analisar Visualmente", key="btn_analise_visual"):
+        if uploaded_file is None:
+            st.warning("Por favor, carregue um print de tela")
+        else:
+            with st.spinner('Analisando elementos visuais para SEO...'):
+                # Salvar a imagem temporariamente
+                with open("temp_upload.png", "wb") as f:
+                    f.write(uploaded_file.getvalue())
+                
+                # Usar a API Gemini para análise de imagem
+                modelo_visao = genai.GenerativeModel("gemini-1.5-pro")
+                
+                prompt = f"""
+                Você é um especialista em SEO técnico e UX. Analise esta captura de tela de site e forneça recomendações detalhadas de otimização.
+
+                **Contexto:**
+                - Tipo de página: {page_type}
+                - URL: {page_url or 'Não fornecida'}
+                
+                **Itens para Avaliar:**
+                1. Estrutura visual e hierarquia de informações
+                2. Elementos de SEO on-page visíveis (títulos, headings)
+                3. Layout e espaçamento para leitura
+                4. Chamadas para ação visíveis
+                5. Elementos de confiança (selos, depoimentos)
+                6. Problemas de usabilidade aparentes
+                7. Oportunidades para rich snippets
+                8. Velocidade de carregamento (indicadores visuais)
+                
+                **Formato da Resposta:**
+                - Lista priorizada de problemas
+                - Recomendações específicas para cada um
+                - Exemplos visuais de melhorias
+                - Estimativa de impacto (baixo/médio/alto)
+                
+                **Saída:**
+                Use markdown com destaques e emojis para categorizar:
+                🔥 Problema crítico
+                ⚡ Oportunidade rápida
+                🛠️ Melhoria técnica
+                ✨ Sugestão avançada
+                """
+                
+                # Enviar a imagem e o prompt para análise
+                response = modelo_visao.generate_content([prompt, "temp_upload.png"])
+                
+                # Exibir resultados
+                st.image(uploaded_file, caption="Screenshot analisado", width=600)
+                st.markdown("### 🔍 Análise de SEO Visual")
+                st.markdown(response.text)
+                
+                # Adicionar seção de recomendações práticas
+                st.markdown("### 🛠️ Plano de Ação")
+                
+                prompt_plano = """
+                Com base na análise anterior, crie um plano de ação passo-a-passo para implementar as melhorias, incluindo:
+                
+                1. Priorização (o que fazer primeiro)
+                2. Recursos necessários (time, ferramentas)
+                3. Tempo estimado por tarefa
+                4. Métricas para acompanhamento
+                
+                Formate como lista markdown numerada com prazos e responsáveis.
+                """
+                
+                plano_resposta = modelo_texto.generate_content(prompt_plano)
+                st.markdown(plano_resposta.text)
+                
+                # Limpar arquivo temporário
+                os.remove("temp_upload.png")
+                st.success("Análise concluída! Consulte as recomendações abaixo.")
 # 6. COMPARADOR DE PRODUTOS (índice 5 - agora no dropdown)
 with st.expander("🆚 Comparador de Produtos", expanded=False):
     st.header("🆚 Gerador de Comparações Técnicas")
